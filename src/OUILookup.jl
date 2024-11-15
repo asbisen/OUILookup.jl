@@ -14,7 +14,7 @@ include("query.jl")
 export OUIRecord,
     # query_from_dbfile, # query without loading the db into memory (memory efficient)
     # query_from_dict, # query from loaded db memory (fast but memory intensive)
-    query_mac,    # query from either db or dict depending on memory constraints
+    ouilookup,    # query from either db or dict depending on memory constraints
     manufacturer, # get the manufacturer from OUIRecord
     address,      # get the address from OUIRecord
     mac_prefix    # get the mac prefix from OUIRecord

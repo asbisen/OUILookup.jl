@@ -122,7 +122,7 @@ end
 
 
 """
-    query_mac(mac_address::AbstractString; db=nothing) -> Union{OUIRecord, Nothing}
+    ouilookup(mac_address::AbstractString; db=nothing) -> Union{OUIRecord, Nothing}
 
 Query MAC address vendor information using either a preloaded database dictionary or the OUI database file.
 
@@ -145,15 +145,15 @@ it performs fast lookups from the in-memory dictionary.
 # Example
 ```julia
 # Single file-based lookup
-result = query_mac("00:50:C2:00:00:00")
+result = ouilookup("00:50:C2:00:00:00")
 
 # Multiple lookups using preloaded database
 db = load_oui_database()  # Load database once
-result1 = query_mac("00:50:C2:00:00:00", db=db)  # Fast dictionary lookup
-result2 = query_mac("00:1A:2B:00:00:00", db=db)  # Fast dictionary lookup
+result1 = ouilookup("00:50:C2:00:00:00", db=db)  # Fast dictionary lookup
+result2 = ouilookup("00:1A:2B:00:00:00", db=db)  # Fast dictionary lookup
 ```
 """
-function query_mac(mac_address::AbstractString; db=nothing)
+function ouilookup(mac_address::AbstractString; db=nothing)
     if isnothing(db)
         return query_from_dbfile(mac_address)
     else

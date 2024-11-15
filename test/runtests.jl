@@ -1,4 +1,4 @@
-using OUILookup: clean_macaddr, query_mac, load_oui_db
+using OUILookup: clean_macaddr, ouilookup, load_oui_db
 using Test
 
 @testset "OUILookup.jl" begin
@@ -15,29 +15,29 @@ using Test
         @test clean_macaddr("  00:11:22:33:44:55  ") == "001122"
     end
 
-    @testset "query_mac" begin
-        @test_throws AssertionError query_mac("")
-        @test query_mac("88-7E-25-00-00-00").manufacturer == "Extreme Networks Headquarters"
-        @test query_mac("78:46:5F:00:00:00").manufacturer == "Fiberhome Telecommunication Technologies Co.,LTD"
-        @test isnothing(query_mac("90-00-00-00-00-00"))
-        test_mac = query_mac("88-7E-25-00-00-00")
+    @testset "ouilookup" begin
+        @test_throws AssertionError ouilookup("")
+        @test ouilookup("88-7E-25-00-00-00").manufacturer == "Extreme Networks Headquarters"
+        @test ouilookup("78:46:5F:00:00:00").manufacturer == "Fiberhome Telecommunication Technologies Co.,LTD"
+        @test isnothing(ouilookup("90-00-00-00-00-00"))
+        test_mac = ouilookup("88-7E-25-00-00-00")
         @test test_mac.manufacturer == "Extreme Networks Headquarters"
         @test test_mac.address == "2121 RDU Center Drive, Morrisville  NC  27560, US"
-        test_mac = query_mac("78465F")
+        test_mac = ouilookup("78465F")
         @test test_mac.manufacturer == "Fiberhome Telecommunication Technologies Co.,LTD"
         @test test_mac.address == "No.5 DongXin Road, Wuhan  Hubei  430074, CN"
     end
 
-    @testset "query_mac" begin
+    @testset "ouilookup" begin
         db = load_oui_db()
-        @test_throws AssertionError query_mac("", db=db)
-        @test query_mac("88-7E-25-00-00-00", db=db).manufacturer == "Extreme Networks Headquarters"
-        @test query_mac("78:46:5F:00:00:00", db=db).manufacturer == "Fiberhome Telecommunication Technologies Co.,LTD"
-        @test isnothing(query_mac("90-00-00-00-00-00", db=db))
-        test_mac = query_mac("88-7E-25-00-00-00", db=db)
+        @test_throws AssertionError ouilookup("", db=db)
+        @test ouilookup("88-7E-25-00-00-00", db=db).manufacturer == "Extreme Networks Headquarters"
+        @test ouilookup("78:46:5F:00:00:00", db=db).manufacturer == "Fiberhome Telecommunication Technologies Co.,LTD"
+        @test isnothing(ouilookup("90-00-00-00-00-00", db=db))
+        test_mac = ouilookup("88-7E-25-00-00-00", db=db)
         @test test_mac.manufacturer == "Extreme Networks Headquarters"
         @test test_mac.address == "2121 RDU Center Drive, Morrisville  NC  27560, US"
-        test_mac = query_mac("78465F", db=db)
+        test_mac = ouilookup("78465F", db=db)
         @test test_mac.manufacturer == "Fiberhome Telecommunication Technologies Co.,LTD"
         @test test_mac.address == "No.5 DongXin Road, Wuhan  Hubei  430074, CN"
     end
